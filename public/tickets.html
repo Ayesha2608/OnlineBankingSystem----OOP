@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tickets</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Tickets</h2>
+        <form id="ticketForm">
+            <div class="form-group">
+                <label for="ticketId">Ticket ID</label>
+                <input type="number" class="form-control" id="ticketId" required>
+            </div>
+            <div class="form-group">
+                <label for="eventId">Event ID</label>
+                <input type="number" class="form-control" id="eventId" required>
+            </div>
+            <div class="form-group">
+                <label for="userId">User ID</label>
+                <input type="number" class="form-control" id="userId" required>
+            </div>
+            <div class="form-group">
+                <label for="ticketType">Ticket Type</label>
+                <input type="text" class="form-control" id="ticketType" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="seatNumber">Seat Number</label>
+                <input type="text" class="form-control" id="seatNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <input type="text" class="form-control" id="status" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Ticket</button>
+            <button type="button" class="btn btn-secondary" id="updateTicketBtn">Update Ticket</button>
+            <button type="button" class="btn btn-danger" id="deleteTicketBtn">Delete Ticket</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ticketForm = document.getElementById('ticketForm');
+            const updateTicketBtn = document.getElementById('updateTicketBtn');
+            const deleteTicketBtn = document.getElementById('deleteTicketBtn');
+
+            const apiUrl = '/api/tickets';
+
+            // Function to add a ticket
+            const addTicket = () => {
+                const ticketId = document.getElementById('ticketId').value;
+                const eventId = document.getElementById('eventId').value;
+                const userId = document.getElementById('userId').value;
+                const ticketType = document.getElementById('ticketType').value;
+                const price = document.getElementById('price').value;
+                const seatNumber = document.getElementById('seatNumber').value;
+                const status = document.getElementById('status').value;
+
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ticket_id: ticketId,
+                        event_id: eventId,
+                        user_id: userId,
+                        ticket_type: ticketType,
+                        price: price,
+                        seat_number: seatNumber,
+                        status: status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket added successfully!');
+                    // Optionally, clear the form fields or refresh the ticket list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add ticket. Please check the console for more details.');
+                });
+            };
+
+            // Function to update a ticket
+            const updateTicket = () => {
+                const ticketId = document.getElementById('ticketId').value;
+                const eventId = document.getElementById('eventId').value;
+                const userId = document.getElementById('userId').value;
+                const ticketType = document.getElementById('ticketType').value;
+                const price = document.getElementById('price').value;
+                const seatNumber = document.getElementById('seatNumber').value;
+                const status = document.getElementById('status').value;
+
+                fetch(`${apiUrl}/${ticketId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event_id: eventId,
+                        user_id: userId,
+                        ticket_type: ticketType,
+                        price: price,
+                        seat_number: seatNumber,
+                        status: status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket updated successfully!');
+                    // Optionally, clear the form fields or refresh the ticket list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update ticket. Please check the console for more details.');
+                });
+            };
+
+            // Function to delete a ticket
+            const deleteTicket = () => {
+                const ticketId = document.getElementById('ticketId').value;
+
+                fetch(`${apiUrl}/${ticketId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket deleted successfully!');
+                    // Optionally, clear the form fields or refresh the ticket list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete ticket. Please check the console for more details.');
+                });
+            };
+
+            ticketForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addTicket();
+            });
+
+            updateTicketBtn.addEventListener('click', updateTicket);
+            deleteTicketBtn.addEventListener('click', deleteTicket);
+        });
+    </script>
+</body>
+</html>

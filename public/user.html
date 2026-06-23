@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Users</h2>
+        <form id="userForm">
+            <div class="form-group">
+                <label for="userId">User ID</label>
+                <input type="number" class="form-control" id="userId" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="cellNum">Cell Number</label>
+                <input type="text" class="form-control" id="cellNum" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+            <button type="button" class="btn btn-secondary" id="updateUserBtn">Update User</button>
+            <button type="button" class="btn btn-danger" id="deleteUserBtn">Delete User</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userForm = document.getElementById('userForm');
+            const updateUserBtn = document.getElementById('updateUserBtn');
+            const deleteUserBtn = document.getElementById('deleteUserBtn');
+
+            userForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const userId = document.getElementById('userId').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const fullName = document.getElementById('fullName').value;
+                const cellNum = document.getElementById('cellNum').value;
+
+                fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        username: username,
+                        password: password,
+                        email: email,
+                        full_name: fullName,
+                        cell_num: cellNum
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('User added successfully!');
+                    // Optionally, clear the form fields or refresh the user list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add user. Please check the console for more details.');
+                });
+            });
+
+            updateUserBtn.addEventListener('click', () => {
+                const userId = document.getElementById('userId').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const fullName = document.getElementById('fullName').value;
+                const cellNum = document.getElementById('cellNum').value;
+
+                fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        email: email,
+                        full_name: fullName,
+                        cell_num: cellNum
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('User updated successfully!');
+                    // Optionally, clear the form fields or refresh the user list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update user. Please check the console for more details.');
+                });
+            });
+
+            deleteUserBtn.addEventListener('click', () => {
+                const userId = document.getElementById('userId').value;
+
+                fetch(`/api/users/${userId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('User deleted successfully!');
+                    // Optionally, clear the form fields or refresh the user list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete user. Please check the console for more details.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "event-ticketing-management-system",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "oracledb": "^6.5.1"
+  },
+  "description": "An Express and Oracle event ticketing management system",
+  "engines": {
+    "node": ">=18"
+  }
+}

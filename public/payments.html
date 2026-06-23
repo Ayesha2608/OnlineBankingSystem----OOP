@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Payments</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Payments</h2>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="paymentId">Payment ID</label>
+                <input type="number" class="form-control" id="paymentId" required>
+            </div>
+            <div class="form-group">
+                <label for="orderIdPayment">Order ID</label>
+                <input type="number" class="form-control" id="orderIdPayment" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentDate">Payment Date</label>
+                <input type="datetime-local" class="form-control" id="paymentDate" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method</label>
+                <input type="text" class="form-control" id="paymentMethod" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" required>
+            </div>
+            <div class="form-group">
+                <label for="transactionId">Transaction ID</label>
+                <input type="text" class="form-control" id="transactionId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Payment</button>
+            <button type="button" class="btn btn-secondary" id="updatePaymentBtn">Update Payment</button>
+            <button type="button" class="btn btn-danger" id="deletePaymentBtn">Delete Payment</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const paymentForm = document.getElementById('paymentForm');
+            const updatePaymentBtn = document.getElementById('updatePaymentBtn');
+            const deletePaymentBtn = document.getElementById('deletePaymentBtn');
+
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const paymentId = document.getElementById('paymentId').value;
+                const orderId = document.getElementById('orderIdPayment').value;
+                const paymentDate = document.getElementById('paymentDate').value.replace('T', ' ') + ':00';
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                const amount = document.getElementById('amount').value;
+                const transactionId = document.getElementById('transactionId').value;
+
+                fetch('/api/payments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        payment_id: paymentId,
+                        order_id: orderId,
+                        payment_date: paymentDate,
+                        payment_method: paymentMethod,
+                        amount: amount,
+                        transaction_id: transactionId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Payment added successfully!');
+                    // Optionally, clear the form fields or refresh the payment list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add payment. Please check the console for more details.');
+                });
+            });
+
+            updatePaymentBtn.addEventListener('click', () => {
+                const paymentId = document.getElementById('paymentId').value;
+                const orderId = document.getElementById('orderIdPayment').value;
+                const paymentDate = document.getElementById('paymentDate').value.replace('T', ' ') + ':00';
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                const amount = document.getElementById('amount').value;
+                const transactionId = document.getElementById('transactionId').value;
+
+                fetch(`/api/payments/${paymentId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_id: orderId,
+                        payment_date: paymentDate,
+                        payment_method: paymentMethod,
+                        amount: amount,
+                        transaction_id: transactionId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Payment updated successfully!');
+                    // Optionally, clear the form fields or refresh the payment list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update payment. Please check the console for more details.');
+                });
+            });
+
+            deletePaymentBtn.addEventListener('click', () => {
+                const paymentId = document.getElementById('paymentId').value;
+
+                fetch(`/api/payments/${paymentId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Payment deleted successfully!');
+                    // Optionally, clear the form fields or refresh the payment list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete payment. Please check the console for more details.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Ticket Types</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Ticket Types</h2>
+        <form id="ticketTypeForm">
+            <div class="form-group">
+                <label for="ticketTypeId">Ticket Type ID</label>
+                <input type="number" class="form-control" id="ticketTypeId" required>
+            </div>
+            <div class="form-group">
+                <label for="eventId">Event ID</label>
+                <input type="number" class="form-control" id="eventId" required>
+            </div>
+            <div class="form-group">
+                <label for="typeName">Type Name</label>
+                <input type="text" class="form-control" id="typeName" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="quantityAvailable">Quantity Available</label>
+                <input type="number" class="form-control" id="quantityAvailable" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Ticket Type</button>
+            <button type="button" class="btn btn-secondary" id="updateTicketTypeBtn">Update Ticket Type</button>
+            <button type="button" class="btn btn-danger" id="deleteTicketTypeBtn">Delete Ticket Type</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ticketTypeForm = document.getElementById('ticketTypeForm');
+            const updateTicketTypeBtn = document.getElementById('updateTicketTypeBtn');
+            const deleteTicketTypeBtn = document.getElementById('deleteTicketTypeBtn');
+
+            ticketTypeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const ticketTypeId = document.getElementById('ticketTypeId').value;
+                const eventId = document.getElementById('eventId').value;
+                const typeName = document.getElementById('typeName').value;
+                const price = document.getElementById('price').value;
+                const quantityAvailable = document.getElementById('quantityAvailable').value;
+
+                fetch('/api/ticket_types', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ticket_type_id: ticketTypeId,
+                        event_id: eventId,
+                        type_name: typeName,
+                        price: price,
+                        quantity_available: quantityAvailable
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket type added successfully!');
+                    // Optionally, clear the form fields or refresh the ticket type list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add ticket type. Please check the console for more details.');
+                });
+            });
+
+            updateTicketTypeBtn.addEventListener('click', () => {
+                const ticketTypeId = document.getElementById('ticketTypeId').value;
+                const eventId = document.getElementById('eventId').value;
+                const typeName = document.getElementById('typeName').value;
+                const price = document.getElementById('price').value;
+                const quantityAvailable = document.getElementById('quantityAvailable').value;
+
+                fetch(`/api/ticket_types/${ticketTypeId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event_id: eventId,
+                        type_name: typeName,
+                        price: price,
+                        quantity_available: quantityAvailable
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket type updated successfully!');
+                    // Optionally, clear the form fields or refresh the ticket type list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update ticket type. Please check the console for more details.');
+                });
+            });
+
+            deleteTicketTypeBtn.addEventListener('click', () => {
+                const ticketTypeId = document.getElementById('ticketTypeId').value;
+
+                fetch(`/api/ticket_types/${ticketTypeId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Ticket type deleted successfully!');
+                    // Optionally, clear the form fields or refresh the ticket type list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete ticket type. Please check the console for more details.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

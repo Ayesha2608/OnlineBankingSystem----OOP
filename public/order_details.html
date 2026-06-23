@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Order Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Order Details</h2>
+        <form id="orderDetailForm">
+            <div class="form-group">
+                <label for="orderDetailId">Order Detail ID</label>
+                <input type="number" class="form-control" id="orderDetailId" required>
+            </div>
+            <div class="form-group">
+                <label for="orderId">Order ID</label>
+                <input type="number" class="form-control" id="orderId" required>
+            </div>
+            <div class="form-group">
+                <label for="ticketId">Ticket ID</label>
+                <input type="number" class="form-control" id="ticketId" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Order Detail</button>
+            <button type="button" class="btn btn-secondary" id="updateOrderDetailBtn">Update Order Detail</button>
+            <button type="button" class="btn btn-danger" id="deleteOrderDetailBtn">Delete Order Detail</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderDetailForm = document.getElementById('orderDetailForm');
+            const updateOrderDetailBtn = document.getElementById('updateOrderDetailBtn');
+            const deleteOrderDetailBtn = document.getElementById('deleteOrderDetailBtn');
+
+            orderDetailForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const orderDetailId = document.getElementById('orderDetailId').value;
+                const orderId = document.getElementById('orderId').value;
+                const ticketId = document.getElementById('ticketId').value;
+                const quantity = document.getElementById('quantity').value;
+                const price = document.getElementById('price').value;
+
+                fetch('/api/order_details', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_detail_id: orderDetailId,
+                        order_id: orderId,
+                        ticket_id: ticketId,
+                        quantity: quantity,
+                        price: price
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Order detail added successfully!');
+                    // Optionally, clear the form fields or refresh the order detail list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add order detail. Please check the console for more details.');
+                });
+            });
+
+            updateOrderDetailBtn.addEventListener('click', () => {
+                const orderDetailId = document.getElementById('orderDetailId').value;
+                const orderId = document.getElementById('orderId').value;
+                const ticketId = document.getElementById('ticketId').value;
+                const quantity = document.getElementById('quantity').value;
+                const price = document.getElementById('price').value;
+
+                fetch(`/api/order_details/${orderDetailId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_id: orderId,
+                        ticket_id: ticketId,
+                        quantity: quantity,
+                        price: price
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Order detail updated successfully!');
+                    // Optionally, clear the form fields or refresh the order detail list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update order detail. Please check the console for more details.');
+                });
+            });
+
+            deleteOrderDetailBtn.addEventListener('click', () => {
+                const orderDetailId = document.getElementById('orderDetailId').value;
+
+                fetch(`/api/order_details/${orderDetailId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Order detail deleted successfully!');
+                    // Optionally, clear the form fields or refresh the order detail list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete order detail. Please check the console for more details.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

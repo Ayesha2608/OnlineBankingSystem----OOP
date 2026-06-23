@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Event Ticketing System</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="search-results-page">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html">Event Ticketing System</a>
+        <a class="nav-link text-light ml-auto" href="operations.html">Back to operations</a>
+    </nav>
+    <main class="container mt-4">
+        <h2 class="text-center">Search Results</h2>
+        <div id="results" class="table-responsive mt-4"></div>
+    </main>
+    <script>
+        const container = document.getElementById('results');
+        const saved = localStorage.getItem('searchResults');
+
+        if (!saved) {
+            container.innerHTML = '<div class="alert alert-warning">No search has been performed.</div>';
+        } else {
+            try {
+                const result = JSON.parse(saved);
+                const rows = Array.isArray(result.rows) ? result.rows : [];
+                if (rows.length === 0) {
+                    container.innerHTML = '<div class="alert alert-info">No matching record was found.</div>';
+                } else {
+                    const columns = Object.keys(rows[0]);
+                    const table = document.createElement('table');
+                    table.className = 'table table-striped table-bordered';
+                    const head = table.createTHead().insertRow();
+                    columns.forEach(column => {
+                        const cell = document.createElement('th');
+                        cell.textContent = column.replaceAll('_', ' ');
+                        head.appendChild(cell);
+                    });
+                    const body = table.createTBody();
+                    rows.forEach(row => {
+                        const tableRow = body.insertRow();
+                        columns.forEach(column => {
+                            tableRow.insertCell().textContent = row[column] ?? '';
+                        });
+                    });
+                    container.appendChild(table);
+                }
+            } catch (error) {
+                container.innerHTML = '<div class="alert alert-danger">The saved search result is invalid.</div>';
+            }
+        }
+    </script>
+</body>
+</html>

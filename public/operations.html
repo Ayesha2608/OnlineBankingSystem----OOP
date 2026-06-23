@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations - Event Ticketing System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-RiR0s3H0kX/k5ib7/DEsc1LfVqL3FwFbsm2ZcruEX/8eEuPL2lRI4CWOUgpeQxwKt+0QhHdLwtyZ5VxqeqoVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="operations-page">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Event Ticketing System <i class="fa-solid fa-ticket"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section text-center mt-4">
+        <div class="container">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by ID" style="max-width: 400px; margin: 0 auto;">
+            <select id="searchType" class="form-control mt-2" style="max-width: 400px; margin: 0 auto;">
+                <option value="user">User</option>
+                <option value="event">Event</option>
+                <option value="order">Order</option>
+                <option value="ticket">Ticket</option>
+            </select>
+            <button class="btn btn-primary mt-2" onclick="performSearch()">Search</button>
+        </div>
+    </section>
+
+    <!-- Operations Section -->
+    <section class="operations-section" id="operations">
+        <div class="container">
+            <div class="row">
+                <!-- Users Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/user.jpg" class="card-img-top" alt="Users">
+                        <div class="card-body">
+                            <h5 class="card-title">Users</h5>
+                            <p class="card-text">Manage users in the system.</p>
+                            <a href="user.html" class="btn btn-primary">Manage Users</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Venues Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/venues.jpg" class="card-img-top" alt="Venues">
+                        <div class="card-body">
+                            <h5 class="card-title">Venues</h5>
+                            <p class="card-text">Manage event venues.</p>
+                            <a href="venues.html" class="btn btn-primary">Manage Venues</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Events Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/events.jpg" class="card-img-top" alt="Events">
+                        <div class="card-body">
+                            <h5 class="card-title">Events</h5>
+                            <p class="card-text">Organize and manage events.</p>
+                            <a href="events.html" class="btn btn-primary">Manage Events</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tickets Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/tickets.jpg" class="card-img-top" alt="Tickets">
+                        <div class="card-body">
+                            <h5 class="card-title">Tickets</h5>
+                            <p class="card-text">Manage ticket sales.</p>
+                            <a href="tickets.html" class="btn btn-primary">Manage Tickets</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <!-- Ticket Types Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/ticket_types.jpg" class="card-img-top" alt="Ticket Types">
+                        <div class="card-body">
+                            <h5 class="card-title">Ticket Types</h5>
+                            <p class="card-text">Define types of event tickets.</p>
+                            <a href="ticket_types.html" class="btn btn-primary">Manage Ticket Types</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Orders Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/order.png" class="card-img-top" alt="Orders">
+                        <div class="card-body">
+                            <h5 class="card-title">Orders</h5>
+                            <p class="card-text">Track and manage orders.</p>
+                            <a href="orders.html" class="btn btn-primary">Manage Orders</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Order Details Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/order_details.png" class="card-img-top" alt="Order Details">
+                        <div class="card-body">
+                            <h5 class="card-title">Order Details</h5>
+                            <p class="card-text">View details of each order.</p>
+                            <a href="order_details.html" class="btn btn-primary">View Order Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Payments Table -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./images/payments.jpg" class="card-img-top" alt="Payments">
+                        <div class="card-body">
+                            <h5 class="card-title">Payments</h5>
+                            <p class="card-text">Handle transactions.</p>
+                            <a href="payments.html" class="btn btn-primary">Manage Payments</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Custom JS -->
+    <script>
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            const searchType = document.getElementById('searchType').value;
+
+            if (!searchInput) {
+                alert('Please enter a search term.');
+                return;
+            }
+
+            fetch(`/api/search?id=${searchInput}&type=${searchType}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        localStorage.setItem('searchResults', JSON.stringify(data));
+                        localStorage.setItem('searchType', searchType);
+                        window.location.href = 'search_results.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to perform search. Please check the console for more details.');
+                });
+        }
+    </script>
+</body>
+</html>

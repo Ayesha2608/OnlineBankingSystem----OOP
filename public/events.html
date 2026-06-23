@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Events</h2>
+        <form id="eventForm">
+            <div class="form-group">
+                <label for="eventId">Event ID</label>
+                <input type="number" class="form-control" id="eventId" required>
+            </div>
+            <div class="form-group">
+                <label for="organizerId">Organizer ID</label>
+                <input type="number" class="form-control" id="organizerId" required>
+            </div>
+            <div class="form-group">
+                <label for="eventName">Event Name</label>
+                <input type="text" class="form-control" id="eventName" required>
+            </div>
+            <div class="form-group">
+                <label for="eventDescription">Event Description</label>
+                <input type="text" class="form-control" id="eventDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="eventDate">Event Date</label>
+                <input type="date" class="form-control" id="eventDate" required>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start Time</label>
+                <input type="datetime-local" class="form-control" id="startTime" required>
+            </div>
+            <div class="form-group">
+                <label for="endTime">End Time</label>
+                <input type="datetime-local" class="form-control" id="endTime" required>
+            </div>
+            <div class="form-group">
+                <label for="venueId">Venue ID</label>
+                <input type="number" class="form-control" id="venueId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Event</button>
+            <button type="button" class="btn btn-secondary" id="updateEventBtn">Update Event</button>
+            <button type="button" class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventForm = document.getElementById('eventForm');
+            const updateEventBtn = document.getElementById('updateEventBtn');
+            const deleteEventBtn = document.getElementById('deleteEventBtn');
+
+            eventForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const eventId = document.getElementById('eventId').value;
+                const organizerId = document.getElementById('organizerId').value;
+                const eventName = document.getElementById('eventName').value;
+                const eventDescription = document.getElementById('eventDescription').value;
+                const eventDate = document.getElementById('eventDate').value;
+                const startTime = document.getElementById('startTime').value.replace('T', ' ') + ':00';
+                const endTime = document.getElementById('endTime').value.replace('T', ' ') + ':00';
+                const venueId = document.getElementById('venueId').value;
+
+                fetch('/api/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event_id: eventId,
+                        organizer_id: organizerId,
+                        event_name: eventName,
+                        event_description: eventDescription,
+                        event_date: eventDate,
+                        start_time: startTime,
+                        end_time: endTime,
+                        venue_id: venueId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Event added successfully!');
+                    // Optionally, clear the form fields or refresh the event list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add event. Please check the console for more details.');
+                });
+            });
+
+            updateEventBtn.addEventListener('click', () => {
+                const eventId = document.getElementById('eventId').value;
+                const organizerId = document.getElementById('organizerId').value;
+                const eventName = document.getElementById('eventName').value;
+                const eventDescription = document.getElementById('eventDescription').value;
+                const eventDate = document.getElementById('eventDate').value;
+                const startTime = document.getElementById('startTime').value.replace('T', ' ') + ':00';
+                const endTime = document.getElementById('endTime').value.replace('T', ' ') + ':00';
+                const venueId = document.getElementById('venueId').value;
+
+                fetch(`/api/events/${eventId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        organizer_id: organizerId,
+                        event_name: eventName,
+                        event_description: eventDescription,
+                        event_date: eventDate,
+                        start_time: startTime,
+                        end_time: endTime,
+                        venue_id: venueId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Event updated successfully!');
+                    // Optionally, clear the form fields or refresh the event list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update event. Please check the console for more details.');
+                });
+            });
+
+            deleteEventBtn.addEventListener('click', () => {
+                const eventId = document.getElementById('eventId').value;
+
+                fetch(`/api/events/${eventId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Event deleted successfully!');
+                    // Optionally, clear the form fields or refresh the event list
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete event. Please check the console for more details.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
